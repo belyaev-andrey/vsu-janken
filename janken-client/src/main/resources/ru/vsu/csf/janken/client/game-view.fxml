@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.vsu.csf.janken.client.GameController">
+   <children>
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+         <items>
+            <ToggleButton mnemonicParsing="false" selected="true" text="Local">
+               <toggleGroup>
+                  <ToggleGroup fx:id="ServerChoice" />
+               </toggleGroup>
+            </ToggleButton>
+            <ToggleButton mnemonicParsing="false" text="Remote" toggleGroup="$ServerChoice" />
+         </items></ToolBar>
+      <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="player1Figure">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label fx:id="gameStateLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="463.0" text="Label" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="player2Figure">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <GridPane hgap="5.0" prefHeight="322.0" prefWidth="600.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints />
+          <RowConstraints maxHeight="233.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="240.0" minHeight="10.0" prefHeight="206.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="player1Name" promptText="Enter Player's Name" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></TextField>
+            <Label fx:id="player2Name" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ImageView fx:id="player1Avatar" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <image>
+                  <Image url="@player1.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="player2Avatar" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <image>
+                  <Image url="@player2.png" />
+               </image></ImageView>
+            <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+              <buttons>
+                  <ToggleButton fx:id="rockButton" mnemonicParsing="false" onAction="#onRockButtonPressed" selected="true" text="Rock" ButtonBar.buttonData="LEFT">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="PlayerChoice" />
+                     </toggleGroup>
+                  </ToggleButton>
+                  <ToggleButton fx:id="scissorBtn" mnemonicParsing="false" onAction="#onScissorsButtonPressed" text="Scissors" toggleGroup="$PlayerChoice" ButtonBar.buttonData="LEFT" />
+                  <ToggleButton fx:id="paperButton" mnemonicParsing="false" onAction="#onPaperButtonPressed" text="Paper" toggleGroup="$PlayerChoice" ButtonBar.buttonData="LEFT" />
+              </buttons>
+            </ButtonBar>
+            <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+              <buttons>
+                <Button fx:id="playButton" mnemonicParsing="false" onAction="#onPlayButtonPressed" text="Play!" ButtonBar.buttonData="LEFT" />
+              </buttons>
+            </ButtonBar>
+         </children>
+      </GridPane>
+   </children>
+</VBox>
