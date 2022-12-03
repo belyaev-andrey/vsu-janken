@@ -8,8 +8,8 @@ public enum GameCommand implements NetworkCommand, Drawable {
     START("START", "⏱️"),
     END ("END", "🏁");
 
-    public final String cmdString;
-    public final String cmdPicture;
+    private final String cmdString;
+    private final String cmdPicture;
     GameCommand(String cmdString, String cmdPicture) {
         this.cmdString = cmdString;
         this.cmdPicture = cmdPicture;

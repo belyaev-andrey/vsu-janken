@@ -11,8 +11,8 @@ public enum Figure implements NetworkCommand, Drawable {
     SCISSORS("SCISSORS", "✂️"),
     PAPER("PAPER", "📜");
 
-    public final String figureString;
-    public final String figurePicture;
+    private final String figureString;
+    private final String figurePicture;
     
     private 
     

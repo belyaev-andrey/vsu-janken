@@ -21,12 +21,12 @@
    <children>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
          <items>
-            <ToggleButton mnemonicParsing="false" selected="true" text="Local">
+            <ToggleButton fx:id="localGameButton" mnemonicParsing="false" onAction="#onLocalGameButtonPressed" selected="true" text="Local">
                <toggleGroup>
                   <ToggleGroup fx:id="ServerChoice" />
                </toggleGroup>
             </ToggleButton>
-            <ToggleButton mnemonicParsing="false" text="Remote" toggleGroup="$ServerChoice" />
+            <ToggleButton fx:id="remoteGameButton" mnemonicParsing="false" onAction="#onRemoteGameButtonPressed" text="Remote" toggleGroup="$ServerChoice" />
          </items></ToolBar>
       <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
          <children>
@@ -35,7 +35,7 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label fx:id="gameStateLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="463.0" text="Label" textAlignment="CENTER">
+            <Label fx:id="gameStateLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="463.0" text="Press Play To Start" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
@@ -81,13 +81,13 @@
                </image></ImageView>
             <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.halignment="LEFT" GridPane.rowIndex="3">
               <buttons>
-                  <ToggleButton fx:id="rockButton" mnemonicParsing="false" onAction="#onRockButtonPressed" selected="true" text="Rock" ButtonBar.buttonData="LEFT">
+                  <ToggleButton fx:id="rockButton" mnemonicParsing="false" selected="true" text="Rock" ButtonBar.buttonData="LEFT">
                      <toggleGroup>
                         <ToggleGroup fx:id="PlayerChoice" />
                      </toggleGroup>
                   </ToggleButton>
-                  <ToggleButton fx:id="scissorBtn" mnemonicParsing="false" onAction="#onScissorsButtonPressed" text="Scissors" toggleGroup="$PlayerChoice" ButtonBar.buttonData="LEFT" />
-                  <ToggleButton fx:id="paperButton" mnemonicParsing="false" onAction="#onPaperButtonPressed" text="Paper" toggleGroup="$PlayerChoice" ButtonBar.buttonData="LEFT" />
+                  <ToggleButton fx:id="scissorBtn" mnemonicParsing="false" text="Scissors" toggleGroup="$PlayerChoice" ButtonBar.buttonData="LEFT" />
+                  <ToggleButton fx:id="paperButton" mnemonicParsing="false" text="Paper" toggleGroup="$PlayerChoice" ButtonBar.buttonData="LEFT" />
               </buttons>
             </ButtonBar>
             <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">

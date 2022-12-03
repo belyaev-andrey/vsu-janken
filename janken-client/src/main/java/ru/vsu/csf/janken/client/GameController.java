@@ -3,79 +3,70 @@ package ru.vsu.csf.janken.client;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.ToggleButton;
 import ru.vsu.csf.janken.sdk.Game;
 import ru.vsu.csf.janken.sdk.enums.Figure;
 import ru.vsu.csf.janken.sdk.gameplay.Player;
 import ru.vsu.csf.janken.sdk.gameplay.RandomPlayerStrategy;
-import ru.vsu.csf.janken.sdk.gameplay.RoundEvent;
-import ru.vsu.csf.janken.sdk.gameplay.RoundEventListener;
 
-public class GameController implements RoundEventListener {
+public class GameController {
 
-    private Game game;
-    private PlayerUiStrategy strategy;
-
+    private UiGameWrapper wrapper;
+    public ToggleButton rockButton;
+    public ToggleButton scissorBtn;
+    public ToggleButton paperButton;
+    public TextField player1Name;
+    public Label player2Name;
+    public Label player1Figure;
+    public Label player2Figure;
+    public Label gameStateLabel;
 
     @FXML
     public void initialize() {
-        //set avatars and names
 
-        strategy = new PlayerUiStrategy();
-        Player player1 = new Player(strategy);
-        Player player2 = new Player(new RandomPlayerStrategy());
-        this.game = new Game(player1, player2);
+        PlayerUiStrategy player1Strategy = new PlayerUiStrategy();
+        wrapper = new UiGameWrapper(new Game(new Player(player1Strategy), new Player(new RandomPlayerStrategy())));
 
-        //Adding listeners
-        strategy.figureProperty().addListener((observable, oldValue, newValue) ->
-                player1Figure.setText(newValue.figurePicture));
-        player1Figure.setText(strategy.getFigure().figurePicture);
 
-        game.addRoundEventListener(this);
-    }
+        //Adding listener to player1Strategy model
+        player1Strategy.figureProperty().addListener((observable, oldValue, newValue) -> {
+                    player1Figure.setText(newValue.getPicture());
+                    player2Figure.setText("");
+                    gameStateLabel.setText("Press Play To Start");
+                }
+        );
 
-    @Override
-    public void onRoundFinished(RoundEvent event) {
-        player2Figure.setText(event.p2().figurePicture);
-        gameStateLabel.setText(event.result().resultString);
-    }
+        rockButton.setOnAction(event -> player1Strategy.setFigure(Figure.ROCK));
+        scissorBtn.setOnAction(event -> player1Strategy.setFigure(Figure.SCISSORS));
+        paperButton.setOnAction(event -> player1Strategy.setFigure(Figure.PAPER));
 
-    @FXML
-    public TextField player1Name;
-    @FXML
-    public Label player2Name;
-    @FXML
-    public Label player1Figure;
-    @FXML
-    public Label player2Figure;
+        wrapper.player1FigureProperty().addListener((observable, oldValue, newValue) -> {
+            player1Figure.setText(newValue.getPicture());
+        });
 
-    @FXML
-    private Label gameStateLabel;
+        wrapper.player2FigureProperty().addListener((observable, oldValue, newValue) -> {
+            player2Figure.setText(newValue.getPicture());
+        });
 
-    @FXML
-    private ImageView player1Avatar;
+        wrapper.roundResultProperty().addListener((observable, oldValue, newValue) -> {
+            gameStateLabel.setText(newValue.getString());
+        });
 
-    @FXML
-    private ImageView player2Avatar;
-
-    @FXML
-    protected void onRockButtonPressed() {
-        strategy.setFigure(Figure.ROCK);
-    }
-
-    @FXML
-    protected void onScissorsButtonPressed() {
-        strategy.setFigure(Figure.SCISSORS);
-    }
-
-    @FXML
-    protected void onPaperButtonPressed() {
-        strategy.setFigure(Figure.PAPER);
     }
 
     @FXML
     protected void onPlayButtonPressed() {
-        game.round();
+        wrapper.round();
+    }
+
+    @FXML
+    protected void onLocalGameButtonPressed() {
+        //TODO start local game
+    }
+
+    @FXML
+    protected void onRemoteGameButtonPressed() {
+        //TODO start remote game
     }
 
 }

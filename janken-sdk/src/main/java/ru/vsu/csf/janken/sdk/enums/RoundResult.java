@@ -8,7 +8,7 @@ public enum RoundResult implements NetworkCommand {
     LOSE("LOSE"),
     DRAW("DRAW");
     
-    public final String resultString;
+    private final String resultString;
 
     RoundResult(String resultString) {
         this.resultString = resultString;

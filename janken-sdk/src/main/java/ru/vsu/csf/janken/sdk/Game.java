@@ -25,14 +25,6 @@ public class Game {
         this.player2 = player2;
     }
 
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    public Player getPlayer2() {
-        return player2;
-    }
-
     public RoundResult round() {
         Figure player1Result = player1.play();
         Figure player2Result = player2.play();
