@@ -2,7 +2,9 @@ package ru.vsu.csf.janken.client;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import ru.vsu.csf.janken.sdk.AbstractGame;
 import ru.vsu.csf.janken.sdk.Game;
+import ru.vsu.csf.janken.sdk.LocalGame;
 import ru.vsu.csf.janken.sdk.enums.Figure;
 import ru.vsu.csf.janken.sdk.enums.RoundResult;
 import ru.vsu.csf.janken.sdk.gameplay.RoundEvent;
@@ -10,20 +12,29 @@ import ru.vsu.csf.janken.sdk.gameplay.RoundEventListener;
 
 public class UiGameWrapper implements RoundEventListener {
 
-    private final Game game;
+    private Game game;
 
     private final ObjectProperty<Figure> player1Figure = new SimpleObjectProperty<>();
     private final ObjectProperty<Figure> player2Figure = new SimpleObjectProperty<>();
     private final ObjectProperty<RoundResult> roundResult = new SimpleObjectProperty<>();
 
 
-    public UiGameWrapper(Game game) {
+    public UiGameWrapper(AbstractGame game) {
         this.game = game;
         game.addRoundEventListener(this);
     }
 
     public RoundResult round() {
         return game.round();
+    }
+
+    public void endGame() {
+        game.endGame();
+    }
+
+    public void setGame(AbstractGame game) {
+        this.game = game;
+        game.addRoundEventListener(this);
     }
 
     @Override

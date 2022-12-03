@@ -1,9 +1,43 @@
 package ru.vsu.csf.janken.server;
 
+import ru.vsu.csf.janken.sdk.Game;
+import ru.vsu.csf.janken.sdk.LocalGame;
+import ru.vsu.csf.janken.sdk.enums.GameCommand;
+import ru.vsu.csf.janken.sdk.gameplay.Player;
+import ru.vsu.csf.janken.sdk.gameplay.RandomPlayerStrategy;
+import ru.vsu.csf.janken.sdk.gameplay.RoundEvent;
+import ru.vsu.csf.janken.sdk.gameplay.RoundEventListener;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class GameServer {
 
+    public static void main(String[] args) throws IOException {
+        GameServer server = new GameServer(9999);
+        server.start();
+    }
 
-    public static void main(String[] args) {
+    private final int port;
+
+    public GameServer(int port) {
+        this.port = port;
+    }
+
+    public void start() throws IOException {
+        System.out.printf("Server started on: %d%n", port);
+        ServerSocket serverSocket = new ServerSocket(port);
+        while (true) {
+            Socket socket = serverSocket.accept();
+            //TODO create client session and start it
+            System.out.printf("Client connected from: %s%n", socket.getInetAddress());
+            ClientSession session = new ClientSession(socket);
+            new Thread(session).start();
+        }
     }
 
 
