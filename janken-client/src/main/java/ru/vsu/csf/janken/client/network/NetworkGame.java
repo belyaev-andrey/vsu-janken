@@ -1,64 +1,46 @@
 package ru.vsu.csf.janken.client.network;
 
+import io.rsocket.Payload;
+import io.rsocket.RSocket;
+import io.rsocket.core.RSocketConnector;
+import io.rsocket.transport.netty.client.TcpClientTransport;
+import io.rsocket.util.DefaultPayload;
 import ru.vsu.csf.janken.sdk.AbstractGame;
 import ru.vsu.csf.janken.sdk.enums.Figure;
-import ru.vsu.csf.janken.sdk.enums.GameCommand;
 import ru.vsu.csf.janken.sdk.enums.RoundResult;
-import ru.vsu.csf.janken.sdk.gameplay.Player;
 import ru.vsu.csf.janken.sdk.events.RoundEvent;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import ru.vsu.csf.janken.sdk.gameplay.Player;
 
 public class NetworkGame extends AbstractGame {
 
-    Socket socket;
-    private final BufferedReader in;
-    private final PrintWriter out;
+    private final RSocket rSocket;
 
     public NetworkGame(Player player1, String server, int port) {
         super(player1);
-        try {
-            socket = new Socket(server, port);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            //TODO Handle exception properly
-            throw new RuntimeException(e);
-        }
+        rSocket = RSocketConnector.connectWith(TcpClientTransport.create(server, port)).block();
     }
 
     @Override
     protected RoundEvent doOnRound() {
-        out.println(player1.getPlayerStrategy().getFigure().getString());
-        String response;
-        try {
-            while ((response = in.readLine()) == null);
-            System.out.println(response);
+        String command = player1.getPlayerStrategy().getFigure().getString();
+        RoundEvent event = new RoundEvent();
+        rSocket.requestResponse(DefaultPayload.create(command))
+                .map(Payload::getDataUtf8)
+                .doOnNext(s -> updateResponse(s, event))
+                .block();
+        return event;
+    }
+
+    private void updateResponse(String response, RoundEvent event) {
             String[] split = response.split(":");
-            RoundEvent event = new RoundEvent(
-                    RoundResult.valueOf(split[0]),
-                    Figure.valueOf(split[1]),
-                    Figure.valueOf(split[2]));
-            return event;
-        } catch (IOException ex) {
-            //TODO handle exception
-            throw new RuntimeException(ex);
-        }
+            event.setResult(RoundResult.valueOf(split[0]));
+            event.setP1(Figure.valueOf(split[1]));
+            event.setP2(Figure.valueOf(split[2]));
     }
 
     @Override
     protected void doOnEndGame() {
-        out.println(GameCommand.END.getString());
-        try {
-            socket.close();
-        } catch (IOException e) {
-            //TODO handle error
-            throw new RuntimeException(e);
-        }
+        rSocket.dispose();
     }
 
 }

@@ -29,7 +29,7 @@ public class UiGameWrapper implements RoundEventListener, GameOverEventListener 
         game.addGameOverEventListener(this);
     }
 
-    public RoundResult round() {
+    public RoundEvent round() {
         return game.round();
     }
 
@@ -45,9 +45,9 @@ public class UiGameWrapper implements RoundEventListener, GameOverEventListener 
 
     @Override
     public void onRoundFinished(RoundEvent event) {
-        roundResult.setValue(event.result());
-        player1Figure.setValue(event.p1());
-        player2Figure.setValue(event.p2());
+        roundResult.setValue(event.getResult());
+        player1Figure.setValue(event.getP1());
+        player2Figure.setValue(event.getP2());
     }
 
     public void addGameOverListener(GameOverEventListener listener) {

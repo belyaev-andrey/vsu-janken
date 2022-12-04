@@ -33,10 +33,11 @@ public abstract class AbstractGame implements Game {
     protected abstract RoundEvent doOnRound(); //Implemented to avoid copying listeners to all game instances
 
     @Override
-    public RoundResult round() {
+    public RoundEvent round() {
         RoundEvent event = doOnRound();
+        System.out.println("Round result: "+event);
         listeners.forEach(l -> l.onRoundFinished(event));
-        return event.result();
+        return event;
     }
 
     protected abstract void doOnEndGame();//Implemented to avoid copying listeners to all game instances
