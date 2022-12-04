@@ -16,7 +16,6 @@ public class ClientSession implements Runnable {
 
     private final BufferedReader in;
     private final PrintWriter out;
-    private Game game;
 
     Socket socket;
 
@@ -29,7 +28,7 @@ public class ClientSession implements Runnable {
     @Override
     public void run() {
         NetworkStrategy networkStrategy = new NetworkStrategy();
-        game = new LocalGame(new Player(networkStrategy), new Player(new RandomPlayerStrategy()));
+        Game game = new LocalGame(new Player(networkStrategy), new Player(new RandomPlayerStrategy()));
 
         game.addRoundEventListener(event -> {
                     out.printf("%s:%s:%s%n",
@@ -44,16 +43,13 @@ public class ClientSession implements Runnable {
         boolean gameOver = false;
         while (!gameOver) {
             try {
-                if ((command = in.readLine()) != null) {
-                    System.out.println(command);
-                }
+                command = in.readLine();
                 if (GameCommand.END.getString().equals(command)) {
                     gameOver = true;
                     socket.close();
-                } else {
+                } else if (command != null) {
                     networkStrategy.setValue(command);
-                    String result = game.round().getString();
-                    System.out.println(result);
+                    game.round();
                 }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);

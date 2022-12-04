@@ -5,7 +5,7 @@ import ru.vsu.csf.janken.sdk.enums.Figure;
 import ru.vsu.csf.janken.sdk.enums.GameCommand;
 import ru.vsu.csf.janken.sdk.enums.RoundResult;
 import ru.vsu.csf.janken.sdk.gameplay.Player;
-import ru.vsu.csf.janken.sdk.gameplay.RoundEvent;
+import ru.vsu.csf.janken.sdk.events.RoundEvent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,9 +32,8 @@ public class NetworkGame extends AbstractGame {
     }
 
     @Override
-    public RoundResult round() {
+    protected RoundEvent doOnRound() {
         out.println(player1.getPlayerStrategy().getFigure().getString());
-        System.out.println(player1.getPlayerStrategy().getFigure().getString());
         String response;
         try {
             while ((response = in.readLine()) == null);
@@ -44,8 +43,7 @@ public class NetworkGame extends AbstractGame {
                     RoundResult.valueOf(split[0]),
                     Figure.valueOf(split[1]),
                     Figure.valueOf(split[2]));
-            listeners.forEach(l -> l.onRoundFinished(event));
-            return event.result();
+            return event;
         } catch (IOException ex) {
             //TODO handle exception
             throw new RuntimeException(ex);
@@ -53,7 +51,7 @@ public class NetworkGame extends AbstractGame {
     }
 
     @Override
-    public void endGame() {
+    protected void doOnEndGame() {
         out.println(GameCommand.END.getString());
         try {
             socket.close();
@@ -62,4 +60,5 @@ public class NetworkGame extends AbstractGame {
             throw new RuntimeException(e);
         }
     }
+
 }

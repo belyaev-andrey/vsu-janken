@@ -1,17 +1,6 @@
 package ru.vsu.csf.janken.server;
 
-import ru.vsu.csf.janken.sdk.Game;
-import ru.vsu.csf.janken.sdk.LocalGame;
-import ru.vsu.csf.janken.sdk.enums.GameCommand;
-import ru.vsu.csf.janken.sdk.gameplay.Player;
-import ru.vsu.csf.janken.sdk.gameplay.RandomPlayerStrategy;
-import ru.vsu.csf.janken.sdk.gameplay.RoundEvent;
-import ru.vsu.csf.janken.sdk.gameplay.RoundEventListener;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 

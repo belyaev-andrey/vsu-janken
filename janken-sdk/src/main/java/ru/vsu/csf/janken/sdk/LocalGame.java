@@ -4,7 +4,7 @@ import ru.vsu.csf.janken.sdk.enums.Figure;
 import ru.vsu.csf.janken.sdk.enums.RoundResult;
 import ru.vsu.csf.janken.sdk.gameplay.Player;
 import ru.vsu.csf.janken.sdk.gameplay.RoundComparator;
-import ru.vsu.csf.janken.sdk.gameplay.RoundEvent;
+import ru.vsu.csf.janken.sdk.events.RoundEvent;
 
 public class LocalGame extends AbstractGame {
 
@@ -18,13 +18,16 @@ public class LocalGame extends AbstractGame {
     }
 
     @Override
-    public RoundResult round() {
+    protected RoundEvent doOnRound() {
         Figure player1Result = player1.play();
         Figure player2Result = player2.play();
         RoundResult roundResult = roundComparator.compareResults(player1Result, player2Result);
         RoundEvent event = new RoundEvent(roundResult, player1Result, player2Result);
-        listeners.forEach(l -> l.onRoundFinished(event));
-        return roundResult;
+        return event;
     }
 
+    @Override
+    protected void doOnEndGame() {
+        //Nothing to do in the local version
+    }
 }

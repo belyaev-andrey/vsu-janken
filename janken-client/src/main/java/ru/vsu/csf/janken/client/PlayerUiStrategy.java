@@ -7,7 +7,7 @@ import ru.vsu.csf.janken.sdk.gameplay.PlayerStrategy;
 
 public class PlayerUiStrategy implements PlayerStrategy {
 
-    private final ObjectProperty<Figure> figure = new SimpleObjectProperty<>(Figure.ROCK);
+    private final ObjectProperty<Figure> figure = new SimpleObjectProperty<>();
 
     @Override
     public Figure getFigure() {
